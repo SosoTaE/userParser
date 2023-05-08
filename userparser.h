@@ -29,15 +29,78 @@ class datatype {
     }
 
     bool operator>(datatype &a) {
-            if (a.type == "number") {
-                return integerValue > a.integerValue;
-            }
-            else {
-                return stringValue > a.stringValue;
-            }
+        if (a.type == "number") {
+            return integerValue > a.integerValue;
+        }
+        else {
+            return stringValue > a.stringValue;
+        }
 
-            cerr<<"there were some error while comparison"<<endl;
-            exit(1);
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator>(int num) {
+        if (type == "number") {
+            return integerValue > num;
+        }
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator<(int num) {
+        if (type == "number") {
+            return integerValue < num;
+        }
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator==(int num) {
+        if (type == "number") {
+            return integerValue == num;
+        }
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator<=(int num) {
+        if (type == "number") {
+            return integerValue <= num;
+        }
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator>=(int num) {
+        if (type == "number") {
+            return integerValue >= num;
+        }
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    //########################################################
+
+    bool operator>(string str) {
+        return stringValue > str;
+        
+        // cerr<<"there were some error while comparison"<<endl;
+        // exit(1);
+    }
+
+    bool operator==(string str) {
+        return stringValue == str;
+        
+        // cerr<<"there were some error while comparison"<<endl;
+        // exit(1);
+    }
+
+    bool operator<(string str) {
+        return stringValue < str;
+        
+        // cerr<<"there were some error while comparison"<<endl;
+        // exit(1);
     }
 
 };

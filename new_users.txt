@@ -1,6 +1,6 @@
-id:5 name:df surname:kamado age:1
-id:36 name:1 surname:kamado age:1
-id:4 name:asd surname:kamado age:1
-id:4 name:tansdssdsdjiro surname:kamado age:1
-id:6 name:tanjsdadiro surname:kamado age:1
-id:6 name:ab surname:kamado age:1
+id:5 name:ana surname:qatamadze years:2003 gender:1 position:qobuleteli salary:1000
+id:5 name:ana surname:qatamadze years:2003 gender:1 position:qobuleteli salary:700
+id:1 name:luka surname:futkaradze years:2004 gender:0 position:student salary:750
+id:2 name:eliso surname:saladze years:2004 gender:1 position:student salary:750
+id:3 name:stefan surname:zoidze years:2005 gender:0 position:student salary:750
+id:4 name:niko surname:gobadze years:2005 gender:2 position:consultant salary:600

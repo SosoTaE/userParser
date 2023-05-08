@@ -1,7 +1,7 @@
-id name surname age
-5 df kamado 1
-36 1 kamado 1
-4 asd kamado 1
-4 tansdssdsdjiro kamado 1
-6 tanjsdadiro kamado 1
-6 ab kamado 1
+id name surname years gender position salary
+1 luka futkaradze 2004 0 student 750
+2 eliso saladze 2004 1 student 750
+3 stefan zoidze 2005 0 student 750
+4 niko gobadze 2005 2 consultant 600
+5 ana qatamadze 2003 1 qobuleteli 1000
+5 ana qatamadze 2003 1 qobuleteli 700
