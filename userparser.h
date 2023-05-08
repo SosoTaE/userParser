@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <string>
+#include <ostream>
 
 using namespace std;
 
@@ -12,7 +14,32 @@ class datatype {
         int integerValue;
 
     friend void print(datatype data);
-    // friend void writeFile(string url,datatype data);
+    friend string tostring(datatype data);
+
+    bool operator<(datatype &a) {
+        if (a.type == "number") {
+            return integerValue < a.integerValue;
+        }
+        else {
+            return stringValue < a.stringValue;
+        }
+
+        cerr<<"there were some error while comparison"<<endl;
+        exit(1);
+    }
+
+    bool operator>(datatype &a) {
+            if (a.type == "number") {
+                return integerValue > a.integerValue;
+            }
+            else {
+                return stringValue > a.stringValue;
+            }
+
+            cerr<<"there were some error while comparison"<<endl;
+            exit(1);
+    }
+
 };
 
 void print(datatype data) {
@@ -24,15 +51,14 @@ void print(datatype data) {
         }
     }
 
-// void writeFile(string url,datatype data) {
-//     ofstream fout(url);
-//     if (data.type == "number") {
-//         fout<<data.stringValue;
-//     }
-//     else {
-//         fout<<data.stringValue;
-//     }
-// }
+string toString(datatype data) {
+    if (data.type == "number") {
+        return to_string(data.integerValue);
+    }
+    else {
+        return data.stringValue;
+    }
+}
 
 class object {
     private:
@@ -94,6 +120,7 @@ class object {
             properties.key = key;
             properties.type = "number";
             properties.integerValue = each;
+            properties.stringValue = to_string(each);
             length++;
             datatype* new_array = new datatype[length];
             for (int i = 0;i < length - 1;i++) {
@@ -144,28 +171,30 @@ class object {
         }
 
         friend void print(object obj); 
-        // friend void writeFile(string url,object data);
+        friend string toString(object data);
 };
 
+string toString(object data) {
+    string str = "";
+    for (int i = 0;i < data.length - 1;i++) {
+        if (data.array[i].type == "number") {
+            str += data.array[i].key + ":" + to_string(data.array[i].integerValue) + " ";
+        }
+        else {
+            str += data.array[i].key + ":" + data.array[i].stringValue + " ";
+        }
+    }
 
-// void writeFile(string url,object data) {
-//     ofstream fout(url);
-//     for (int i = 0;i < data.length - 1;i++) {
-//         if (data.array[i].type == "number") {
-//             fout<<data.array[i].integerValue<<" ";
-//         }
-//         else {
-//             fout<<data.array[i].stringValue<<" ";
-//         }
-//     }
+    if (data.array[data.length - 1].type == "number") {
+        str += data.array[data.length - 1].key + ":" + to_string(data.array[data.length - 1].integerValue);
+    }
+    else {
+        str += data.array[data.length - 1].key + ":" + data.array[data.length - 1].stringValue;
+    }
 
-//     if (data.array[data.length - 1].type == "number") {
-//         fout<<data.array[data.length - 1].integerValue;
-//     }
-//     else {
-//         fout<<data.array[data.length - 1].stringValue;
-//     }
-// }
+    return str;
+
+}
 
 void print(object obj) {
     cout<<"{"<<endl;
@@ -238,10 +267,62 @@ class objectVector {
             return vec;
         }
 
+        void sort(string key, bool reverse = false) {
+            if (reverse) {
+                for (int i = 0;i < length;i++) {
+                    for (int j = length - 1;j > i;j--) {
+                        datatype one = array[j].get(key);
+                        datatype two = array[j - 1].get(key);
+                        if (one > two) {
+                            object c = array[j];
+                            array[j] = array[j - 1];
+                            array[j - 1] = c;
+                        }                    
+                    }
+                }
+
+                return;
+            }
+
+            for (int i = 0;i < length;i++) {
+                for (int j = 0;j < length - i - 1;j++) {
+                    datatype one = array[j].get(key);
+                    datatype two = array[j + 1].get(key);
+                    if (one > two) {
+                        object c = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = c;
+                    }                    
+                }
+            }
+
+        }
+
+        int index(bool func(object data)) {
+            for (int i = 0;i < length;i++) {
+                if (func(array[i])) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         friend void print(objectVector vec);
+
+        friend void writeFile(string url, objectVector vec);
 
         friend void WriteObjectVectorInFile(objectVector data);
 };
+
+void writeFile(string url, objectVector vec) {
+    ofstream fout(url);
+    for (int i = 0;i < vec.length;i++) {
+        string str = toString(vec.array[i]);
+        fout<<str;
+        fout<<endl;
+    }         
+}
 
 void print(objectVector vec) {
     cout<<"["<<endl;
@@ -250,7 +331,6 @@ void print(objectVector vec) {
     }
     cout<<"]"<<endl;
 }
-
 
 objectVector readFileAndGetData(string url, unsigned int n) {
             ifstream fin(url);
@@ -280,7 +360,6 @@ objectVector readFileAndGetData(string url, unsigned int n) {
             return persons;
 
         }
-
 
 void WriteObjectVectorInFile(objectVector data) {
     for (int i = 0;i < data.length;i++) {

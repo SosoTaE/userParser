@@ -20,6 +20,7 @@
         "compare": "cpp",
         "tuple": "cpp",
         "xtr1common": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "string": "cpp"
     }
 }

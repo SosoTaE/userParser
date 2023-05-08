@@ -3,14 +3,10 @@
 
 using namespace std;
 
-bool func(object data) {
-    datatype each = data.get("id");
-    return each.integerValue > 3;
-}
 
 int main() {
     objectVector persons = readFileAndGetData("./users.txt", 4);
+    writeFile("./new_users.txt", persons);
+    persons.sort("name", true);
     print(persons);
-    cout<<endl<<;
-    print(persons.filter(func));
 }
