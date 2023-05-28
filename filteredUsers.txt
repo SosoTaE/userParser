@@ -1,2 +1,0 @@
-id:5 name:ana surname:qatamadze years:2003 gender:1 position:qobuleteli salary:1000
-id:5 name:ana surname:qatamadze years:2003 gender:1 position:qobuleteli salary:700

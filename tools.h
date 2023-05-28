@@ -3,22 +3,24 @@
 #include <cstdlib>
 #include <string>
 #include <ostream>
+#include <istream>
 
 using namespace std;
 
 class datatype {
     public:
-        string key;
         string type;
+        string key;
         string stringValue;
-        int integerValue;
-
+        double number;
     friend void print(datatype data);
     friend string tostring(datatype data);
 
+    datatype (): number(0), stringValue(""), type("undefined") {}
+
     bool operator<(datatype &a) {
         if (a.type == "number") {
-            return integerValue < a.integerValue;
+            return number < a.number;
         }
         else {
             return stringValue < a.stringValue;
@@ -30,7 +32,7 @@ class datatype {
 
     bool operator>(datatype &a) {
         if (a.type == "number") {
-            return integerValue > a.integerValue;
+            return number > a.number;
         }
         else {
             return stringValue > a.stringValue;
@@ -40,41 +42,41 @@ class datatype {
         exit(1);
     }
 
-    bool operator>(int num) {
+    bool operator>(double num) {
         if (type == "number") {
-            return integerValue > num;
+            return number > num;
         }
         cerr<<"there were some error while comparison"<<endl;
         exit(1);
     }
 
-    bool operator<(int num) {
+    bool operator<(double num) {
         if (type == "number") {
-            return integerValue < num;
+            return number < num;
         }
         cerr<<"there were some error while comparison"<<endl;
         exit(1);
     }
 
-    bool operator==(int num) {
+    bool operator==(double num) {
         if (type == "number") {
-            return integerValue == num;
+            return number == num;
         }
         cerr<<"there were some error while comparison"<<endl;
         exit(1);
     }
 
-    bool operator<=(int num) {
+    bool operator<=(double num) {
         if (type == "number") {
-            return integerValue <= num;
+            return number <= num;
         }
         cerr<<"there were some error while comparison"<<endl;
         exit(1);
     }
 
-    bool operator>=(int num) {
+    bool operator>=(double num) {
         if (type == "number") {
-            return integerValue >= num;
+            return number >= num;
         }
         cerr<<"there were some error while comparison"<<endl;
         exit(1);
@@ -103,20 +105,85 @@ class datatype {
         // exit(1);
     }
 
+    datatype operator+(datatype a) {
+        if (a.type == type && a.type == "string") {
+            stringValue += a.stringValue;
+             a.stringValue = stringValue;
+            return a;
+        }
+        else if (a.type == type && a.type == "number") {
+            number += a.number;
+            a.number = number;
+            return a;
+        }
+
+        cerr<<"there are error"<<endl;
+        exit(1);
+    }
+
+    datatype operator-(datatype a) {
+        if (a.type == type && a.type == "number") {
+            number -= a.number;
+            a.number = number;
+            return a;
+        }
+
+        cerr<<"there are error"<<endl;
+        exit(1);
+    }
+
+    datatype operator*(datatype a) {
+        if (a.type == type && a.type == "number") {
+            number *= a.number;
+            a.number = number;
+            return a;
+        }
+
+        cerr<<"there are error"<<endl;
+        exit(1);
+    }
+
+    datatype operator/(datatype a) {
+        if (a.type == type && a.type == "number") {
+            number /= a.number;
+            a.number = number;
+            return a;
+        }
+
+        cerr<<"there are error"<<endl;
+        exit(1);
+    }
+
+    datatype& operator=(double newValue) {
+        type = "number";
+        number = newValue;
+        return *this;
+    }
+
+    datatype& operator=(string newValue) {
+        type = "string";
+        stringValue = newValue;
+        return *this;
+    }
+
 };
 
 void print(datatype data) {
-        if (data.type == "number") {
-            cout<<data.integerValue;
-        }
-        else {
-            cout<<data.stringValue;
-        }
+    if (data.type == "number") {
+        cout<<data.number;
     }
+    else if (data.type == "string")  {
+        cout<<data.stringValue;
+    } else {
+        cout<<"undefined"<< endl;
+    }
+
+    
+}
 
 string toString(datatype data) {
     if (data.type == "number") {
-        return to_string(data.integerValue);
+        return to_string(data.number);
     }
     else {
         return data.stringValue;
@@ -153,7 +220,7 @@ class object {
             properties.key = key;
             if (isNumber(each)) {
                 properties.type = "number";
-                properties.integerValue = atoi(each.c_str());
+                properties.number = atof(each.c_str());
             }
             else {
                 properties.type = "string";
@@ -165,7 +232,7 @@ class object {
                 if (array[i].key == key) {
                     array[i].stringValue = each;
                     if (isNumber(each)) {
-                        array[i].integerValue = atoi(each.c_str());
+                        array[i].number = atoi(each.c_str());
                     }
                     length--;
                     return;
@@ -182,13 +249,13 @@ class object {
             datatype properties;
             properties.key = key;
             properties.type = "number";
-            properties.integerValue = each;
+            properties.number = each;
             properties.stringValue = to_string(each);
             length++;
             datatype* new_array = new datatype[length];
             for (int i = 0;i < length - 1;i++) {
                 if (array[i].key == key) {
-                    array[i].integerValue = each;
+                    array[i].number = each;
                     array[i].type = "number";
                     length--;
                     return;
@@ -241,7 +308,7 @@ string toString(object data) {
     string str = "";
     for (int i = 0;i < data.length - 1;i++) {
         if (data.array[i].type == "number") {
-            str += data.array[i].key + ":" + to_string(data.array[i].integerValue) + " ";
+            str += data.array[i].key + ":" + to_string(data.array[i].number) + " ";
         }
         else {
             str += data.array[i].key + ":" + data.array[i].stringValue + " ";
@@ -249,7 +316,7 @@ string toString(object data) {
     }
 
     if (data.array[data.length - 1].type == "number") {
-        str += data.array[data.length - 1].key + ":" + to_string(data.array[data.length - 1].integerValue);
+        str += data.array[data.length - 1].key + ":" + to_string(data.array[data.length - 1].number);
     }
     else {
         str += data.array[data.length - 1].key + ":" + data.array[data.length - 1].stringValue;
@@ -263,7 +330,7 @@ void print(object obj) {
     cout<<"{"<<endl;
     for (int i = 0;i < obj.length;i++) {
         if (obj.array[i].type == "number") {
-            cout<<"\t"<<obj.array[i].key<<":"<<obj.array[i].integerValue<<endl;
+            cout<<"\t"<<obj.array[i].key<<":"<<obj.array[i].number<<endl;
         }
         else {
             cout<<"\t"<<obj.array[i].key<<":"<<obj.array[i].stringValue<<endl;
@@ -272,7 +339,15 @@ void print(object obj) {
     cout<<"}"<<endl;
 }
 
-class objectVector { 
+class objectVector; 
+
+class products {
+    public:
+        virtual objectVector filter(bool func(object data)) = 0;
+        virtual datatype reduce(datatype func(object data, datatype b), datatype c) = 0;
+} ;   
+
+class objectVector: public products { 
     private:
         unsigned int length = 0;
         object* array;
@@ -371,6 +446,13 @@ class objectVector {
             return -1;
         }
 
+        datatype reduce(datatype func(object data, datatype b), datatype c) {
+            for (int i = 0;i < length;i++) {
+                c = func(array[i], c);
+            }
+            return c;
+        }
+
         friend void print(objectVector vec);
 
         friend void writeFile(string url, objectVector vec);
@@ -385,6 +467,18 @@ void writeFile(string url, objectVector vec) {
         fout<<str;
         fout<<endl;
     }         
+}
+
+void writeFile(string url, datatype data) {
+    ofstream fout(url);
+    if (data.type == "number") {
+        fout<<data.number<<endl;
+    } else if (data.type == "string") {
+        fout<<data.stringValue<<endl;
+    } else {
+        fout<<"undefined"<<endl;
+    }  
+
 }
 
 void print(objectVector vec) {
@@ -404,23 +498,23 @@ objectVector readFileAndGetData(string url, unsigned int n) {
                 fin>>keys[i];
             }
 
-            objectVector persons;
+            objectVector objVector;
 
-            object someone;
+            object obj;
             int index = 0;
             while (fin>>each)
             {
-                someone.set(keys[index],each);
+                obj.set(keys[index],each);
                 index++;
                 if (index == n) {
                     index = 0;
-                    persons.add(someone);
-                    object new_someone;
-                    someone = new_someone;
+                    objVector.add(obj);
+                    object new_obj;
+                    obj = new_obj;
                 }
             }
 
-            return persons;
+            return objVector;
 
         }
 

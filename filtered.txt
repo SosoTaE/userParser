@@ -1,0 +1,6 @@
+code:ABC123 name:Widget_X price:9.990000
+code:ABC123 name:Widget_A price:12.000000
+code:ABC123 name:Widget_B price:999.990000
+code:ABC123 name:Widget_C price:1200.000000
+code:ABC123 name:Widget_D price:99.990000
+code:ABC123 name:Widget_E price:15.000000

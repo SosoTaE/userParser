@@ -1,21 +1,29 @@
 #include <iostream>
-#include "userparser.h"
+#include "tools.h" 
 
 using namespace std;
 
 bool func(object data) {
-    return data.get("id") == 5;
+    return data.get("code") == "ABC123";
 }
 
+datatype reduceCallBack(object data, datatype b) {
+    datatype price = data.get("price");
+    datatype result = price + b;
+    return result;
+}
+
+
+
 int main() {
-    objectVector persons = readFileAndGetData("./users.txt", 7);
-    writeFile("./new_users.txt", persons);
-    persons.sort("years");
-    print(persons);
-    writeFile("./new_users.txt", persons);
-    objectVector filteredPersons = persons.filter(func);
-    print(filteredPersons);
-    writeFile("./filteredUsers.txt", filteredPersons);
-    print(filteredPersons);
-    
+    objectVector products = readFileAndGetData("./productList.txt", 3);
+    objectVector providers = readFileAndGetData("./providerList.txt", 3);
+    objectVector filtered = products.filter(func);
+    print(filtered);
+    datatype c;
+    c = 0;
+    datatype sum = filtered.reduce(reduceCallBack,c);
+    print(sum);
+    writeFile("./sum.txt", sum);
+    writeFile("./filtered.txt", filtered);
 }
